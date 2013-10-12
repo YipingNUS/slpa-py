@@ -1,34 +1,25 @@
 #!/usr/bin/env python
 import numpy
 
-class LdaGibbsSampler:
-    """Performs Gibbs sampling for approximate inference on LDA
+class Slpa:
+    """Identify overlapping nodes and overlapping communities in social networks
 
     Attributes:
-        documents: int[][] entry represent word id in m(th) document
-                   and n(th) word
-        V: int, the size of the vocabulary
-        K: int, # of topics
-        iteration: int; maximum number of iterations of Gibbs sampling
-
-        alpha: float. document--topic associations
-        beta: float. topic--term associations
-
-        int topic_assign[M][N]: topic assignment for each word
-        int count_doc_topic[M][K]: number of words in document i assigned to topic j.
-        int count_term_topic[V][K]: number of instances of word i (term?) assigned to topic j.
-        int word_sum_topic[K]: total number of words assigned to topic j.
-        int word_sum_doc[M]: total number of words in document i.
+       adjacency_list: int[N][K] for each node a list of its neighbours' id
+       node_labels: [int]{id:count} first dimension is a list of all nodes
+                    for each node we have a dictionary keeping the count 
+                    of the labels it received 
         
     """    
  
-    def __init__(self, documents, V):
-        """Initialize the sampler with input data
+    def __init__(self, input_file):
+        """Initialize the instance with input data
+
+        create adjacency_list after reading the input file
 
         Args:
-            documents: int[][] entry represent word id in m(th) document
-                       and n(th) word
-            V: int, the size of the vocabulary
+            input_file: the file path to the input file
+                        The file 
         """
         self.documents = documents
         self.V = V
