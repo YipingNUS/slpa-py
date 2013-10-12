@@ -5,6 +5,11 @@ class Slpa:
     """Identify overlapping nodes and overlapping communities in social networks
 
     Attributes:
+       N: number of nodes
+       ITERATION: number of iterations
+       THRESHHOLD: r => [0,1], if the probability is less than r,
+                   remove it during post processing
+
        adjacency_list: int[N][K] for each node a list of its neighbours' id
        node_labels: [int]{id:count} first dimension is a list of all nodes
                     for each node we have a dictionary keeping the count 
@@ -21,42 +26,29 @@ class Slpa:
             input_file: the file path to the input file
                         The file 
         """
-        self.documents = documents
-        self.V = V
+        f = open(input_file, "r")
+        lines = f.readlines()
+        
+        self.N = int(lines.pop().strip()) 
+        self.LAMDA = int(lines.pop().strip())  
+ 
+        self.adjacency_list = []
+
+        for line in lines:
+            # get all the neighbors of the current node
+            self.adjacency_list.append([int(i) for i in line.strip().split(" ")])     
+        
     #end of __init__ 
 
-    def configure(self, iteration):
-        """Set parameters for tuning
-
-        Args:
-            iteration: int; maximum number of iterations of Gibbs sampling
-            TODO: more parameters
-        """
-        self.iteration = iteration
-    #end of configure
-
-    def inference_gibbs_sampling(self, K, alpha, beta):
-        """Performs Gibbs Sampling 
-           
-           Select initial state ? Repeat a large number of times: 
-               1. Select an element 
-               2. Update conditional on other elements. 
+    def perform_slpa(self, ITERATION):
+        """Performs SLPA algorithm 
         
         Args:
-            K: int. # of topics
-            alpha: float. symmetric prior parameter on document--topic associations
-            beta: symmetric prior parameter on topic--term associations
-
-        Refer to pseudo code in figure 9
+            TERATION: number of iterations
         """
-        self.K = K
-        self.alpha = [alpha] * K
-        self.beta = [beta] * V
+        self.ITERATION = ITERATION
 
-        #initialize the state of the Markov chain
-        self.initialize_state()
-
-        for i in range(self.iteration):
+        for i in range(self.ITERATION):
             for m in range(len(topic_assign)):  #for each document
                 for n in range(len(topic_assign[m])):  #for each word
                     #decrement counts and sums
@@ -91,34 +83,16 @@ class Slpa:
                 count_term_topic[document[m][n]][topic] += 1	
 
     #end of initialize_state
- 
-    def sample_full_conditional(m, n)
-        """calculate the full conditional distribution for a word token with index i=(m,n)
 
+    def post_processing(self, THRESHHOLD):
+        """performs post processing to remove the labels that are below the threshhold
+           
         Args:
-            m: m(th) document
-            n: n(th) word
-
-        Refer to formula (78) in paper
+	    THRESHHOLD: r => [0,1], if the probability is less than r,
+                        remove it during post processing
         """
-        pseudo_prob_topic_dist = (count_term_topic[:, documents[m][n]] + 
-
-        
-
-    #end of sample_full_conditional
-
-    def get_theta   
-        """calculated theta based on document_topic and alpha
-        refer to formula (82)
-        """
-    #end of get_theta
-
-    def get_phi
-        """calculated phi based on word_topic and beta
-        refer to formula (81)
-        """        
-    #end of get_phi
-
+        self.THRESHHOLD = THRESHHOLD
+    #end of post_processing
     
-
-#end of LdaGibbsSampler class
+ 
+#end of Slpa class
