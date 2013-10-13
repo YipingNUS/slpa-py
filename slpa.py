@@ -71,7 +71,7 @@ class Slpa:
 
         for t in range(self.ITERATION):
               
-            print "Performing %dth iteration" % t
+            print "Performing %dth iteration..." % t
 
             order = np.random.permutation(self.N)  # Nodes.ShuffleOrder()
             for i in order:  #for each node
@@ -103,24 +103,44 @@ class Slpa:
 	    THRESHHOLD: r => [0,1], if the probability is less than r,
                         remove it during post processing
         """
+        print "Performing post processing..."
+
         self.THRESHHOLD = THRESHHOLD
+
+        for memory in self.node_memory:
+            sum_label = sum(memory.itervalues())
+            threshhold = sum_label * self.THRESHHOLD
+            for k,v in memory.items():
+                if v < threshhold:
+                    del memory[k]  # remove the outliers
     #end of post_processing
     
  
 #end of Slpa class
 
 def main():
-    slpa = Slpa("input_graph.txt")
 
     start_time = time.time()
+    slpa = Slpa("input_graph.txt")
+    end_time = time.time()
+    print("Elapsed time for initialization was %g seconds" % (end_time - start_time))
 
-    slpa.perform_slpa(20)  #perform slpa for 20 iterations
-
+    start_time = time.time()
+    slpa.perform_slpa(1)  #perform slpa for 20 iterations
     end_time = time.time()
     print("Elapsed time for slpa was %g seconds" % (end_time - start_time))
 
-    for mem in slpa.node_memory:
-        print str(mem)
+    start_time = time.time()
+    slpa.post_processing(0.1)  #perform postprocessing with threshhold 0.1
+    end_time = time.time()
+    print("Elapsed time for post processing was %g seconds" % (end_time - start_time))
+        
+    f_out = open("output.txt","w+")
+    for i in range(len(slpa.node_memory)):
+        f_out.write("Node %d" % i)
+        f_out.write("%s\n" % str(slpa.node_memory[i]))        
+    f_out.close()
+
 #end of main().
 
 if __name__ == "__main__":
