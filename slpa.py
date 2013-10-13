@@ -126,7 +126,7 @@ def main():
     print("Elapsed time for initialization was %g seconds" % (end_time - start_time))
 
     start_time = time.time()
-    slpa.perform_slpa(1)  #perform slpa for 20 iterations
+    slpa.perform_slpa(20)  #perform slpa for 20 iterations
     end_time = time.time()
     print("Elapsed time for slpa was %g seconds" % (end_time - start_time))
 
