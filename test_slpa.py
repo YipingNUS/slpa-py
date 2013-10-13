@@ -1,5 +1,11 @@
 #!/usr/bin/python
 
+'''
+Created on Oct 12, 2013
+
+@author: yiping
+'''
+
 import numpy
 #import slpa
 import time
@@ -20,7 +26,7 @@ def main():
 
     """
     FILE_LOCATION = 'input_graph.txt'
-    N = 1000000  #total 1,000,000 nodes
+    N = 10000  #total 1,000,000 nodes
     LAMDA = 200  #average degree set to 200
 
     ITERATION = 20

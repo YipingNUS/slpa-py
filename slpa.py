@@ -1,5 +1,12 @@
 #!/usr/bin/env python
-import numpy
+'''
+Created on Oct 12, 2013
+
+@author: yiping
+'''
+
+import numpy as np
+import time
 
 class Slpa:
     """Identify overlapping nodes and overlapping communities in social networks
@@ -11,7 +18,7 @@ class Slpa:
                    remove it during post processing
 
        adjacency_list: int[N][K] for each node a list of its neighbours' id
-       node_labels: [int]{id:count} first dimension is a list of all nodes
+       node_memory: [int]{id:count} first dimension is a list of all nodes
                     for each node we have a dictionary keeping the count 
                     of the labels it received 
         
@@ -29,60 +36,65 @@ class Slpa:
         f = open(input_file, "r")
         lines = f.readlines()
         
-        self.N = int(lines.pop().strip()) 
-        self.LAMDA = int(lines.pop().strip())  
+        self.N = int(lines.pop(0).strip()) 
+        self.LAMDA = int(lines.pop(0).strip())  
+
+        print "N=%d" % self.N
+        print "LAMDA=%d" % self.LAMDA
  
         self.adjacency_list = []
+        self.node_memory = []        
 
         for line in lines:
             # get all the neighbors of the current node
-            self.adjacency_list.append([int(i) for i in line.strip().split(" ")])     
-        
+            self.adjacency_list.append([int(i) for i in line.strip().split(" ")])
+
+        print "self.adjacency_list has length %d" % len(self.adjacency_list)
+
+        for i in range(self.N):     
+            self.node_memory.append({i:1})  #append a dictionary containing single entry to node_memory
+
+        print "self.node_memory has length %d" % len(self.node_memory)
+
     #end of __init__ 
+
 
     def perform_slpa(self, ITERATION):
         """Performs SLPA algorithm 
         
+        Use multinomial sampling for speaker rule
+        Use maximum vote for listener rule
         Args:
             TERATION: number of iterations
         """
         self.ITERATION = ITERATION
 
-        for i in range(self.ITERATION):
-            for m in range(len(topic_assign)):  #for each document
-                for n in range(len(topic_assign[m])):  #for each word
-                    #decrement counts and sums
-                    old_topic = topic_assign[m][n]
-                    count_doc_topic[m][old_topic] -= 1
-                    word_sum_topic[old_topic] -= 1
-                    count_term_topic[document[m][n]][old_topic] -= 1
+        for t in range(self.ITERATION):
+              
+            print "Performing %dth iteration" % t
 
-                    #perform full conditional inference
-                    new_topic = sample_full_conditional(m,n)
-                    topic_assign[m][n] = new_topic
+            order = np.random.permutation(self.N)  # Nodes.ShuffleOrder()
+            for i in order:  #for each node
+                label_list = {}
 
-                    count_doc_topic[m][new_topic] += 1
-                    word_sum_topic[new_topic] += 1
-                    count_term_topic[document[m][n]][new_topic] += 1
-            
-            #TODO: if converged and L sampling iterations since last read out then read out parameters        
-    #end of gibbs_sampling
-
-    def initialize_state(self):
-        """ Initialisation: assignment topics to words, increment counts
-           
-        """
-        for m in range(len(topic_assign)):  #for each document
-            for n in range(len(topic_assign[m])):  #for each word
-                # sample topic for the current word
-                topic = numpy.random.multinomial(100,[1/K.]*K).argmax()
-                topic_assign[m][n] = topic
-                #increment counts
-                count_doc_topic[m][topic] += 1
-	        word_sum_topic[topic] += 1
-                count_term_topic[document[m][n]][topic] += 1	
-
-    #end of initialize_state
+                for j in self.adjacency_list[i]:  #for each neighbor of the listener
+                    # select a label to propagate from speaker j to listener i
+                    sum_label = sum(self.node_memory[j].itervalues())
+                    label = self.node_memory[j].keys()[np.random.multinomial(1,[float(c)/sum_label for c in self.node_memory[j].values()]).argmax()]
+                    if label not in label_list:
+                        label_list[label] = 1
+                    else:
+			label_list[label] += 1
+                
+                #listener chose a received label to add to memory
+                selected_label = max(label_list, key=label_list.get)
+                #add the selected label to the memory
+                if selected_label in self.node_memory[i]:
+                    self.node_memory[i][selected_label] += 1
+                else:
+                    self.node_memory[i][selected_label] = 1
+                                
+    #end of perform_slpa
 
     def post_processing(self, THRESHHOLD):
         """performs post processing to remove the labels that are below the threshhold
@@ -96,3 +108,21 @@ class Slpa:
     
  
 #end of Slpa class
+
+def main():
+    slpa = Slpa("input_graph.txt")
+
+    start_time = time.time()
+
+    slpa.perform_slpa(20)  #perform slpa for 20 iterations
+
+    end_time = time.time()
+    print("Elapsed time for slpa was %g seconds" % (end_time - start_time))
+
+    for mem in slpa.node_memory:
+        print str(mem)
+#end of main().
+
+if __name__ == "__main__":
+    main()
+
