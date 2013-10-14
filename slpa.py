@@ -7,6 +7,7 @@ Created on Oct 12, 2013
 
 import numpy as np
 import time
+import operator
 
 class Slpa:
     """Identify overlapping nodes and overlapping communities in social networks
@@ -141,6 +142,32 @@ def main():
         f_out.write("%s\n" % str(slpa.node_memory[i]))        
     f_out.close()
 
+    # dictionary to maintain the size of all the groups
+    group_size = {}
+
+    for i in range(len(slpa.node_memory)):
+        for j in slpa.node_memory[i].keys():
+            if j in group_size:
+                group_size[j] += 1
+            else:
+                group_size[j] = 1
+
+    f_out = open("stats.txt","w+")
+    f_out.write("Graph of %d nodes\n" % slpa.N)
+    f_out.write("Total %d groups\n" % len(group_size.keys()))
+
+    sum_membership = sum(group_size.itervalues())
+    f_out.write("Each node has membership in %.2f groups on average\n" % (float(sum_membership) / slpa.N) )
+
+    f_out.write("group\tcount\n")
+
+    sorted_group_size = sorted(group_size.iteritems(), key=operator.itemgetter(1))
+
+    for item in sorted_group_size:
+        if item[1] > 0:
+            f_out.write("{}\t{}\n".format(item[0], item[1]))
+
+    f_out.close()
 #end of main().
 
 if __name__ == "__main__":
