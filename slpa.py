@@ -121,7 +121,7 @@ class Slpa:
 def main():
 
     start_time = time.time()
-    slpa = Slpa("input_graph.txt")
+    slpa = Slpa("input_graph_undirected.txt")
     end_time = time.time()
     print("Elapsed time for initialization was %g seconds" % (end_time - start_time))
 
