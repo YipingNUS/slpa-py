@@ -10,8 +10,14 @@ import numpy as np
 #import slpa
 import time
 import random 
+import getopt
+import sys
 
-def main():
+def usage():
+  print "\nThis is the usage function\n"
+  print 'Usage: '+sys.argv[0]+' -i <file> -n <num nodes>'
+
+def main(argv):
     """test slpa, randomly generate a graph
 
     Attributes:
@@ -60,8 +66,56 @@ def main():
     end_time = time.time()
     print("Elapsed time to generate directed graph %g seconds" % (end_time - start_time))
 
-    # generate undirected graph
-    adjacency_list = []
+    try:
+        opts, args = getopt.getopt(argv, 'hi:n:', ['help', 'input file=', 'number of nodes='])
+        if not opts or len(opts) != 2:
+          print 'Wrong number of options supplied'
+          usage()
+          sys.exit(2)
+
+        #get sys arguments
+        input_file = opts[0][1]
+        print "input file at %s" % input_file
+        num_nodes = int(opts[1][1])
+        print "graph contains %d nodes" % num_nodes
+
+        # generate undirected graph
+        adjacency_list = []
+        #initialize adjacency_list with empty list
+        for i in range(num_nodes):
+            adjacency_list.append([])
+
+        f = open(input_file,"r")
+        lines = f.readlines()
+  
+        for line in lines: 
+            node1, node2 = [int(part) for part in line.split("\t")]
+            node1 -= 1
+            node2 -= 1
+            adjacency_list[node1].append(node2)
+            adjacency_list[node2].append(node1)
+     
+        f = open("input_graph_undirected.txt","w+")
+        f.write("%d\n" % num_nodes)  #write the number of nodes in first line
+        f.write("%d\n" % LAMDA) #write lamda in second line
+
+        for node in adjacency_list:
+            f.write("%s\n" % " ".join([str(neighbor) for neighbor in node]))
+
+        f.close()
+
+    except getopt.GetoptError,e:
+        print e
+        usage()
+        sys.exit(2)
+    # end of try except
+
+    for opt, arg in opts:
+        if opt in ('-h', '--help'):
+            usage()
+            sys.exit(2)
+
+    '''
     for i in range(N):
         adjacency_list.append([np.random.randint(N)])
 
@@ -74,16 +128,10 @@ def main():
 
     end_time = time.time()
     print("Elapsed time to generate undirected graph %g seconds" % (end_time - start_time))
+    '''
+    
 
-    f = open("input_graph_undirected.txt","w+")
-    f.write("%d\n" % N)  #write the number of nodes in first line
-    f.write("%d\n" % LAMDA) #write lamda in second line
-
-    for node in adjacency_list:
-        f.write("%s\n" % " ".join([str(neighbor) for neighbor in node]))
-
-    f.close()
 # End of main().
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])

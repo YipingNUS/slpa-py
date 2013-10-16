@@ -73,11 +73,10 @@ class Slpa:
         for t in range(self.ITERATION):
               
             print "Performing %dth iteration..." % t
-
             order = np.random.permutation(self.N)  # Nodes.ShuffleOrder()
             for i in order:  #for each node
                 label_list = {}
-
+               
                 for j in self.adjacency_list[i]:  #for each neighbor of the listener
                     # select a label to propagate from speaker j to listener i
                     sum_label = sum(self.node_memory[j].itervalues())
