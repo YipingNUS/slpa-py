@@ -1,0 +1,12 @@
+#!/bin/bash 
+#java -jar GANXiSw.jar -i test.ipairs -r 0.1
+java -jar GANXiSw.jar -i ../network_50000/network_50000_13.dat -r 0.1
+java -jar GANXiSw.jar -i ../network_50000/network_50000_15.dat -r 0.1
+java -jar GANXiSw.jar -i ../network_50000/network_50000_18.dat -r 0.1
+java -jar GANXiSw.jar -i ../network_50000/network_50000_20.dat -r 0.1
+java -jar GANXiSw.jar -i ../network_50000/network_50000_5.dat -r 0.1
+java -jar GANXiSw.jar -i ../network_50000/network_50000_8.dat -r 0.1
+java -jar GANXiSw.jar -i ../network_50000/network_50000_10.dat -r 0.1
+
+
+
