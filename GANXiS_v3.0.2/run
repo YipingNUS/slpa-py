@@ -1,12 +1,75 @@
 #!/bin/bash 
-#java -jar GANXiSw.jar -i test.ipairs -r 0.1
-java -jar GANXiSw.jar -i ../network_50000/network_50000_13.dat -r 0.1
-java -jar GANXiSw.jar -i ../network_50000/network_50000_15.dat -r 0.1
-java -jar GANXiSw.jar -i ../network_50000/network_50000_18.dat -r 0.1
-java -jar GANXiSw.jar -i ../network_50000/network_50000_20.dat -r 0.1
-java -jar GANXiSw.jar -i ../network_50000/network_50000_5.dat -r 0.1
-java -jar GANXiSw.jar -i ../network_50000/network_50000_8.dat -r 0.1
-java -jar GANXiSw.jar -i ../network_50000/network_50000_10.dat -r 0.1
+printf "Start Fold 0........\n"
+
+T="$(date +%s%N)"
+java -jar GANXiSw.jar -i ../network_50000/network_50000_5.dat -Sym 1 -r 0.15 -d output/0
+T="$(($(date +%s%N)-T))"
+# Seconds
+S="$((T/1000000000))"
+# Milliseconds
+M="$((T/1000000))"
+printf "Average Degree: 5 Execution Time: %02d:%02d:%02d:%02d.%03d\n" "$((S/86400))" "$((S/3600%24))" "$((S/60%60))" "$((S%60))" "${M}"
+
+T="$(date +%s%N)"
+java -jar GANXiSw.jar -i ../network_50000/network_50000_8.dat -Sym 1 -r 0.15 -d output/0
+T="$(($(date +%s%N)-T))"
+# Seconds
+S="$((T/1000000000))"
+# Milliseconds
+M="$((T/1000000))"
+printf "Average Degree: 8 Execution Time: %02d:%02d:%02d:%02d.%03d\n" "$((S/86400))" "$((S/3600%24))" "$((S/60%60))" "$((S%60))" "${M}"
+
+T="$(date +%s%N)"
+java -jar GANXiSw.jar -i ../network_50000/network_50000_10.dat -Sym 1 -r 0.15 -d output/0
+T="$(($(date +%s%N)-T))"
+# Seconds
+S="$((T/1000000000))"
+# Milliseconds
+M="$((T/1000000))"
+printf "Average Degree: 10 Execution Time: %02d:%02d:%02d:%02d.%03d\n" "$((S/86400))" "$((S/3600%24))" "$((S/60%60))" "$((S%60))" "${M}"
+
+T="$(date +%s%N)"
+java -jar GANXiSw.jar -i ../network_50000/network_50000_13.dat -Sym 1 -r 0.15 -d output/0
+T="$(($(date +%s%N)-T))"
+# Seconds
+S="$((T/1000000000))"
+# Milliseconds
+M="$((T/1000000))"
+printf "Average Degree: 13 Execution Time: %02d:%02d:%02d:%02d.%03d\n" "$((S/86400))" "$((S/3600%24))" "$((S/60%60))" "$((S%60))" "${M}"
+
+T="$(date +%s%N)"
+java -jar GANXiSw.jar -i ../network_50000/network_50000_15.dat -Sym 1 -r 0.15 -d output/0
+T="$(($(date +%s%N)-T))"
+# Seconds
+S="$((T/1000000000))"
+# Milliseconds
+M="$((T/1000000))"
+printf "Average Degree: 15 Execution Time: %02d:%02d:%02d:%02d.%03d\n" "$((S/86400))" "$((S/3600%24))" "$((S/60%60))" "$((S%60))" "${M}"
+
+T="$(date +%s%N)"
+java -jar GANXiSw.jar -i ../network_50000/network_50000_18.dat -Sym 1 -r 0.15 -d output/0
+T="$(($(date +%s%N)-T))"
+# Seconds
+S="$((T/1000000000))"
+# Milliseconds
+M="$((T/1000000))"
+printf "Average Degree: 18 Execution Time: %02d:%02d:%02d:%02d.%03d\n" "$((S/86400))" "$((S/3600%24))" "$((S/60%60))" "$((S%60))" "${M}"
+
+T="$(date +%s%N)"
+java -jar GANXiSw.jar -i ../network_50000/network_50000_20.dat -Sym 1 -r 0.15 -d output/0
+T="$(($(date +%s%N)-T))"
+# Seconds
+S="$((T/1000000000))"
+# Milliseconds
+M="$((T/1000000))"
+printf "Average Degree: 20 Execution Time: %02d:%02d:%02d:%02d.%03d\n" "$((S/86400))" "$((S/3600%24))" "$((S/60%60))" "$((S%60))" "${M}"
+
+#java -jar GANXiSw.jar -i ../network_50000/network_50000_15.dat -t 50
+#java -jar GANXiSw.jar -i ../network_50000/network_50000_18.dat -t 50
+#java -jar GANXiSw.jar -i ../network_50000/network_50000_20.dat -t 50
+#java -jar GANXiSw.jar -i ../network_50000/network_50000_13.dat -t 
+#java -jar GANXiSw.jar -i ../network_50000/network_50000_8.dat -t 50
+#java -jar GANXiSw.jar -i ../network_50000/network_50000_10.dat -t 50
 
 
 
