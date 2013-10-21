@@ -1,0 +1,8 @@
+output_file_names = ["SLPAw_network_50000_5_run1_r0.15_v3_T100.icpm", "SLPAw_network_50000_8_run1_r0.15_v3_T100.icpm", "SLPAw_network_50000_10_run1_r0.15_v3_T100.icpm", "SLPAw_network_50000_13_run1_r0.15_v3_T100.icpm", "SLPAw_network_50000_15_run1_r0.15_v3_T100.icpm", "SLPAw_network_50000_18_run1_r0.15_v3_T100.icpm", "SLPAw_network_50000_20_run1_r0.15_v3_T100.icpm"]
+first_level_file_names = ["community_first_level_50000_5.out", "community_first_level_50000_8.out", "community_first_level_50000_10.out", "community_first_level_50000_13.out", "community_first_level_50000_15.out", "community_first_level_50000_18.out", "community_first_level_50000_20.out"]
+second_level_file_names = ["community_second_level_50000_5.out", "community_second_level_50000_8.out", "community_second_level_50000_10.out", "community_second_level_50000_13.out", "community_second_level_50000_15.out", "community_second_level_50000_18.out", "community_second_level_50000_20.out"]
+# read the input files from the 10 folds
+f = open("run_nmi")
+
+for i in range(10):
+    print i
