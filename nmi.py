@@ -2,6 +2,8 @@
 
 '''
 Created on Oct 12, 2013
+I did not complete this class because I found 
+previous implementation of the same method
 
 @author: yiping
 '''
